@@ -1,0 +1,6 @@
+PE2#show ip ospf neighbor
+
+Neighbor ID     Pri   State           Dead Time   Address         Interface
+10.255.0.1        1   FULL/BDR        00:00:31    10.0.13.1       GigabitEthernet0/0
+10.255.0.3        1   INIT/-          00:00:39    10.0.34.2       GigabitEthernet0/1
+PE2#

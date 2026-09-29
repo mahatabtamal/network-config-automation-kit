@@ -1,0 +1,53 @@
+PE2#show running-config
+Building configuration...
+
+Current configuration : 1298 bytes
+!
+hostname PE2
+!
+ip domain-name netkit.lab
+!
+username admin privilege 15 secret cisco
+enable secret cisco
+!
+logging buffered 16384 informational
+service timestamps log datetime msec
+no ip http server
+banner motd ^C Maintenance window Sunday 02:00 UTC ^C
+!
+interface GigabitEthernet0/0
+ description Link to PE1
+ ip address 10.0.13.2 255.255.255.252
+ no shutdown
+!
+interface GigabitEthernet0/1
+ description Customer edge CE1
+ ip address 10.0.23.1 255.255.255.252
+ shutdown
+!
+interface Loopback0
+ description Router ID / iBGP endpoint
+ ip address 10.255.0.2 255.255.255.255
+ no shutdown
+!
+router ospf 1
+ router-id 10.255.0.2
+ log-adjacency-changes
+ network 10.0.13.0 0.0.0.3 area 0
+ network 10.0.23.0 0.0.0.3 area 0
+ network 10.255.0.2 0.0.0.0 area 0
+!
+router bgp 65001
+ bgp router-id 10.255.0.2
+ bgp log-neighbor-changes
+ neighbor 10.255.0.1 remote-as 65001
+ neighbor 10.255.0.1 description iBGP peer PE1
+!
+line vty 0 4
+ login local
+ transport input ssh
+line console 0
+ logging synchronous
+!
+end
+PE2#

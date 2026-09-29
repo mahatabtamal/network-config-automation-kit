@@ -1,0 +1,4 @@
+device,interfaces_up,interfaces_total,ospf_neighbors,bgp_peers,routes,status,warnings
+PE1,3,3,2,2,7,PASS,
+PE2,2,3,1,1,6,WARNING,"PE2: interface GigabitEthernet0/1 is administratively down/down (not up/up); PE2: only 2 interface(s) up/up, expected 3; PE2: OSPF neighbor 10.255.0.3 stuck in INIT/-; PE2: 1 OSPF neighbor(s) FULL, expected 2; PE2: BGP peer 10.255.0.3 not established (state: Active); PE2: 1 expected BGP peer(s) missing/not established"
+PE3,0,0,0,0,0,MISSING,PE3: no saved show output found in show-output/PE3/

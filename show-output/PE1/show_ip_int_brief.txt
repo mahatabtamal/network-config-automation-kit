@@ -1,0 +1,6 @@
+PE1#show ip interface brief
+Interface              IP-Address      OK? Method Status                Protocol
+GigabitEthernet0/0     10.0.12.1       YES manual up                    up
+GigabitEthernet0/1     10.0.13.1       YES manual up                    up
+Loopback0              10.255.0.1      YES manual up                    up
+PE1#

@@ -1,0 +1,122 @@
+# ---------------------------------------------------------------
+# Device inventory - the single source of truth for both
+# configuration generation (generate_config.py) and the audit
+# baseline (audit_network.py).
+# ---------------------------------------------------------------
+
+# Global defaults merged into every device (device values win).
+defaults:
+  domain: netkit.lab
+  username: admin
+  secret: cisco
+  ospf_process: 1
+  bgp_as: 65001
+
+devices:
+  - hostname: PE1
+    role: pe
+    router_id: 10.255.0.1
+    loopback: 10.255.0.1
+    interfaces:
+      - name: GigabitEthernet0/0
+        description: "Uplink to SP1 core"
+        ip: 10.0.12.1
+        mask: 255.255.255.252
+        ospf_network: 10.0.12.0
+        ospf_wildcard: 0.0.0.3
+        ospf_area: 0
+      - name: GigabitEthernet0/1
+        description: "Link to PE2"
+        ip: 10.0.13.1
+        mask: 255.255.255.252
+        ospf_network: 10.0.13.0
+        ospf_wildcard: 0.0.0.3
+        ospf_area: 0
+      - name: Loopback0
+        description: "Router ID / iBGP endpoint"
+        ip: 10.255.0.1
+        mask: 255.255.255.255
+        ospf_network: 10.255.0.1
+        ospf_wildcard: 0.0.0.0
+        ospf_area: 0
+    bgp_neighbors:
+      - ip: 10.255.0.2
+        remote_as: 65001
+        description: "iBGP peer PE2"
+      - ip: 10.255.0.3
+        remote_as: 65001
+        description: "iBGP peer PE3"
+    # Audit expectations
+    expected:
+      interfaces_up: 3        # Loopback0 + 2 x GigabitEthernet
+      ospf_neighbors: 2
+      bgp_peers: 2
+
+  - hostname: PE2
+    role: pe
+    router_id: 10.255.0.2
+    loopback: 10.255.0.2
+    interfaces:
+      - name: GigabitEthernet0/0
+        description: "Link to PE1"
+        ip: 10.0.13.2
+        mask: 255.255.255.252
+        ospf_network: 10.0.13.0
+        ospf_wildcard: 0.0.0.3
+        ospf_area: 0
+      - name: GigabitEthernet0/1
+        description: "Customer edge CE1"
+        ip: 10.0.23.1
+        mask: 255.255.255.252
+        ospf_network: 10.0.23.0
+        ospf_wildcard: 0.0.0.3
+        ospf_area: 0
+      - name: Loopback0
+        description: "Router ID / iBGP endpoint"
+        ip: 10.255.0.2
+        mask: 255.255.255.255
+        ospf_network: 10.255.0.2
+        ospf_wildcard: 0.0.0.0
+        ospf_area: 0
+    bgp_neighbors:
+      - ip: 10.255.0.1
+        remote_as: 65001
+        description: "iBGP peer PE1"
+      - ip: 10.255.0.3
+        remote_as: 65001
+        description: "iBGP peer PE3"
+    expected:
+      interfaces_up: 3
+      ospf_neighbors: 2
+      bgp_peers: 2
+
+  - hostname: PE3
+    role: pe
+    router_id: 10.255.0.3
+    loopback: 10.255.0.3
+    interfaces:
+      - name: GigabitEthernet0/0
+        description: "Uplink to SP1 core"
+        ip: 10.0.34.1
+        mask: 255.255.255.252
+        ospf_network: 10.0.34.0
+        ospf_wildcard: 0.0.0.3
+        ospf_area: 0
+      - name: Loopback0
+        description: "Router ID / iBGP endpoint"
+        ip: 10.255.0.3
+        mask: 255.255.255.255
+        ospf_network: 10.255.0.3
+        ospf_wildcard: 0.0.0.0
+        ospf_area: 0
+    bgp_neighbors:
+      - ip: 10.255.0.1
+        remote_as: 65001
+        description: "iBGP peer PE1"
+      - ip: 10.255.0.2
+        remote_as: 65001
+        description: "iBGP peer PE2"
+    expected:
+      interfaces_up: 2
+      ospf_neighbors: 1
+      bgp_peers: 2

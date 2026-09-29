@@ -1,0 +1,6 @@
+PE2#show ip bgp summary
+BGP router identifier 10.255.0.2, local AS number 65001
+Neighbor        V    AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
+10.255.0.1      4 65001      40      38       12    0    0 00:30:15            4
+10.255.0.3      4 65001       0       5        0    0    0 never               Active
+PE2#
