@@ -149,7 +149,7 @@ python scripts/audit_network.py
 ```
 
 The script extracts hostname, interface status, IP addresses, OSPF neighbors,
-BGP peers, and routing information, and compares everything against the
+BGP peers and routing information, then compares everything against the
 expectations declared in `inventory/devices.yml` (`expected:` block).
 
 ## 4. Audit Report
@@ -216,7 +216,7 @@ DRIFT: PE2: missing on device: neighbor 10.255.0.3 remote-as 65001
 DRIFT: PE2: extra on device: banner motd ^C Maintenance window Sunday 02:00 UTC ^C
 ```
 
-Two kinds of drift are reported:
+Two kinds of drift are reported.
 
 - **Missing on device** - a line from the generated config was never applied
   (e.g. a forgotten iBGP neighbor).
@@ -232,5 +232,3 @@ also run from CI or cron.
 - Add a device: append an entry to `inventory/devices.yml` and re-run the
   generator.
 - Add a check: extend `audit_device()` in `scripts/audit_network.py`.
-- Add a parser: write a small regex-based `parse_*` function following the
-  existing pattern.
